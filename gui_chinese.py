@@ -9,14 +9,14 @@ if not os.path.exists("todos.txt"):
 
 sg.theme("DarkGrey6")
 clock = sg.Text('', key="clock")
-label = sg.Text("Type in a to-do")
+label = sg.Text("输入待办事项")
 input_box = sg.InputText(tooltip="Enter todo", key="todo")
-add_button = sg.Button("Add")
+add_button = sg.Button("添加")
 list_box = sg.Listbox(values=functions.get_todos(), key='todos',
                       enable_events=True, size=[45,10])
-edit_button = sg.Button("Edit")
-complete_button = sg.Button("Complete")
-exit_button = sg.Button("Exit")
+edit_button = sg.Button("修改")
+complete_button = sg.Button("完成")
+exit_button = sg.Button("退出")
 # layout expects a list, the element will be put in a row if put in one list
 window = sg.Window("My To-Do App",
                    layout=[[clock],
@@ -28,17 +28,17 @@ window = sg.Window("My To-Do App",
 
 while True:
     event, values = window.read(timeout=200)
-    window["clock"].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
+    window["clock"].update(value=time.strftime("%Y/%m/%d， %H:%M:%S"))
 
     match event:
-        case "Add":
+        case "添加":
             todos = functions.get_todos()
             new_todo = values['todo'] + "\n"
             todos.append(new_todo)
             functions.write_todos(todos)
             window['todos'].update(values=todos)
 
-        case "Edit":
+        case "修改":
             try:
                 todo_to_edit = values['todos'][0]
                 new_todo = values['todo'] + "\n"
@@ -52,7 +52,7 @@ while True:
             except IndexError:
                 sg.popup("Please select items first.", font=('Helvetica', 20))
 
-        case "Complete":
+        case "完成":
             try:
                 todo_to_delete = values['todos'][0]
                 todos = functions.get_todos()
@@ -64,7 +64,7 @@ while True:
             except IndexError:
                 sg.popup("Please select items first.", font=('Helvetica', 20))
 
-        case "Exit":
+        case "退出":
             break
 
         case 'todos':
